@@ -44,7 +44,7 @@ if os.path.exists(env_file):
 SECRET_KEY = env('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env.bool('DEBUG', default=False)
 
 ALLOWED_HOSTS = [".deepandbetter.com", "127.0.0.1", "localhost"]
 
