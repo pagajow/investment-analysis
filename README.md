@@ -1,0 +1,1 @@
+This application is designed to simplify fundamental analysis of publicly traded companies by focusing on annual financial reports. It provides tools for evaluating key financial metrics and ratios, helping users make informed investment decisions efficiently.
