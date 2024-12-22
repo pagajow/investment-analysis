@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}List of Companies{% endblock %}
+
+{% block header %}List of Companies{% endblock %}
+
+{% block content %}
+
+    <div class="row">
+        {% for company in companies %}
+            <div class="col-md-4 mb-4"> <!-- Kolumna zajmująca 4 kolumny z 12 w Bootstrapie (3 karty w jednym wierszu) -->
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <a href="{% url 'financial_data_list' company.id %}" class="text-decoration-none">
+                                {{ company.name }} ({{ company.ticker }})
+                            </a>
+                        </h5>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <p>No companies in the database.</p>
+        {% endfor %}
+    </div>
+{% endblock %}

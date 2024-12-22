@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load static %} 
+{% load custom_filters %}
+
+{% block title %}Edit financial data{% endblock %}
+{% block header %}Edit financial data{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/editfindata.css' %}">  
+{% endblock %}
+
+{% block content %}
+<p id="company-id" style="display: none;">{{ company.id }}</p>
+
+<h2>
+    {{ financial_data.0.company.name }} ({{ financial_data.0.company.ticker }}) / {{ financial_data.0.company.currency }}
+</h2>
+
+<div class="d-flex flex-wrap align-items-center mt-3">
+    <a href="{% url 'financial_data_list' company_id=company.id %}" class="btn me-3">
+        <i class="fa-solid fa-arrow-left"></i> Back to Financial Data
+    </a>
+    <button class="btn btn-primary" id="save-data-btn" type="button">Save data</button>
+</div>
+
+<div class="table-container">
+    <table id="financial-data-table" class="table">
+        <thead>
+            <tr>
+                <th class="short-column"></th>
+                {% for field in fields %}
+                    {% if field == 'id' %}
+                        <th class="short-column hidden" data-field="{{field}}">{{ field|get_field_name }}</th>
+                    {% elif field == 'year' %}
+                        <th class="short-column" data-field="{{field}}">{{ field|get_field_name }}</th>
+                    {% else %}
+                        <th data-field="{{field}}">{{ field|get_field_name }}</th>
+                    {% endif %}
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for data in financial_data %}
+            <tr>
+                <th class="short-column">
+                    <i class="fas fa-trash-alt text-secondary delete-row" style="cursor: pointer;"></i>
+                </th>
+                {% for field in fields %}
+                    {% if field == 'id' %}
+                        <td class="short-column hidden" data-field="{{field}}" data-year="{{data.year}}">{{ data|get_field_value:field }}</td>
+                    {% elif field == 'year' %}
+                        <td data-field="{{field}}" data-year="{{data.year}}"><input class="short-column" type="number" min="0" step="1" name="{{field}}" value="{{ data|get_field_value:field }}"/></td>
+                    {% else %}
+                        <td data-field="{{field}}" data-year="{{data.year}}""><input type="number" name="{{field}}" value="{{ data|get_field_value:field }}"/></td>
+                    {% endif %}
+                {% endfor %}
+            </tr>
+            {% empty %}
+            <tr>
+                <td id="no_financial_data" colspan="15">There is no financial data for this company</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<div class="d-flex justify-content-end mt-3">
+    <label 
+    data-bs-toggle="tooltip" 
+    title="When checked, sending data will delete all records for years that are not present."
+    class="ms-3">
+        <input type="checkbox" id="overwrite-all">
+        Overwrite All Records
+    </label>
+</div>
+
+<div class="d-flex flex-wrap align-items-center mt-3 mb-3">
+    <button class="btn btn-secondary me-3 mb-3" id="add-row-end-btn" type="button">Add Row At the End</button>
+    <button class="btn btn-secondary me-3 mb-3" id="add-row-begin-btn" type="button">Add Row At the Begin</button>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+    <script src="{% static 'js/editfindata.js' %}"></script>
+{% endblock %}

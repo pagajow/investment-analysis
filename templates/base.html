@@ -1,0 +1,62 @@
+{% load static %} 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Investment Analysis{% endblock %}</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <link rel="stylesheet" href="{% static 'dist/bundle.css' %}"> 
+    {% block extra_css %}{% endblock %}
+</head>
+
+<body>
+    <header>
+        <div class="container d-flex flex-column">
+            <h1 id="main-header">{% block header %}Investment App{% endblock %}</h1>
+        </div>
+    </header>
+
+    <div class="layout">
+        <button id="toggle-sidebar">&#9776;</button>
+        <nav class="sidebar-wrapper">
+            <ul class="sidebar-nav">
+                {% if user.is_authenticated %}
+                    <li><a href="{% url 'company_list' %}">Companies</a></li>
+                    <li><a href="{% url 'new_company' %}">New Company</a></li>
+                    <li>
+                        <span class="sidebar-text">Welcome, {{ user.username }}!</span>
+                    </li>
+                    <li>
+                        <form method="POST" action="{% url 'logout' %}">
+                            {% csrf_token %}
+                            <button type="submit" class="">Logout</button>
+                        </form>
+                    </li>
+                {% else %}
+                    <li><a href="{% url 'login' %}">Login</a></li>
+                    <li><a href="{% url 'register' %}">Register</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+        <main class="main-content">
+            {% block content %}
+            {% endblock %}
+        </main>
+    </div>
+    
+    
+    <footer>
+        <p>&copy; 2024 Financial Analysis by Patryk Gajowniczek. All rights reserved.</p>
+    </footer>
+
+    <script>
+        window.serverBaseUrl = '{{ request.scheme }}://{{ request.get_host }}';
+        window.csrfToken = "{{ csrf_token }}";
+    </script>
+    <script src="{% static 'dist/bundle.js' %}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

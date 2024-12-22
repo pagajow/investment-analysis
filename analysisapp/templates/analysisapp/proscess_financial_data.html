@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Process CSV data{% endblock %}
+
+{% block extra_css %}<!-- import css -->{% endblock %}
+
+{% block header %}Process CSV data{% endblock %}
+
+{% block content %}
+    <Import data-modules="processcsvdata"></Import>
+
+    <h2>{{ company.name }} ({{ company.ticker }}) / {{ company.currency }}</h2>
+
+    <ul id="field_list" style="display: none;">
+        {% for field in fields %}
+            <li class="list-inline-item me-3" data-field="{{ field }}">{{ field }}</li>
+        {% endfor %}
+    </ul>
+
+    <div class="d-flex flex-wrap align-items-center mt-3">
+        <a href="{% url 'financial_data_list' company_id=company.id %}" class="btn me-3">
+            <i class="fa-solid fa-arrow-left"></i> Back to Financial Data
+        </a>
+        <button class="btn btn-primary" id="save-data-btn" type="button">Save data</button>
+    </div>
+    
+    <div class="table-container">
+        <table id="raw-data-table" class="table" data-company-id="{{ company.id }}">
+            <thead>
+                <tr>
+                    {% for column in columns %}
+                        <th title="{{ column }}" data-column="{{ column }}">
+                            {{ column }}
+                            <select class="form-select field-selector"  title="None">
+                                <option value="" title="None">None</option>
+                                {% for field in fields %}
+                                    <option value="{{ field }}"">{{ field }}</option>
+                                {% endfor %}
+                            </select>
+                            
+                        </th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in data %}
+                    <tr>
+                        {% for value in row.values %}
+                            <td>
+                                <input type="text" class="table-input" value="{{ value }}">
+                            </td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="d-flex justify-content-end mt-3">
+        <label 
+        data-bs-toggle="tooltip" 
+        title="When checked, sending data will delete all records for years that are not present."
+        class="ms-3">
+            <input type="checkbox" id="overwrite-all">
+            Overwrite All Records
+        </label>
+    </div>
+
+    <div class="d-flex flex-wrap align-items-center mt-3 mb-3">
+        <button 
+            class="btn btn-secondary me-3 mb-3" 
+            id="btn-msnmoney"
+            type="button"
+            data-bs-toggle="tooltip" 
+            title="The button transforms financial data into the format used on the MSN Money website. It converts numbers expressed in thousands, millions, and billions into full numeric values by removing abbreviations such as K, M, and B.">
+        Format MSN Money</button>
+    </div>
+
+    
+{% endblock %}
+
+
+{% block extra_js %}<!-- import js -->{% endblock %}

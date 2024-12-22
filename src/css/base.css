@@ -1,0 +1,151 @@
+/* RESETOWANIE STYLÓW I GLOBALNE USTAWIENIA */
+html, body {
+    height: 100%;
+    margin: 0;
+    box-sizing: border-box;
+    overflow-x: hidden;
+    font-family: Arial, sans-serif; /* Czcionka bazowa */
+}
+
+/* UKŁAD STRONY */
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Wysokość widocznego okna */
+}
+
+.layout {
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+}
+
+main {
+    flex: 1; /* Główna treść zajmuje resztę przestrzeni */
+    padding: 20px;
+    background-color: #ffffff;
+    overflow-y: auto;
+}
+
+/* HEADER */
+header {
+    background-color: #f8f9fa;
+}
+
+#main-header {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #2c3e50;
+    text-align: center;
+    margin: 2rem 0;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* FOOTER */
+footer {
+    background-color: #f8f9fa;
+    padding: 20px;
+    font-size: 0.9em;
+    color: #666;
+    text-align: center;
+    margin-top: auto;
+}
+
+/* SIDEBAR */
+.sidebar-wrapper {
+    display: flex;
+    flex-direction: column;
+    background-color: #f8f9fa;
+    min-width: 250px; /* Szerokość menu bocznego */
+    overflow-y: auto;
+    transition: transform 0.3s ease-in-out;
+}
+
+.sidebar-wrapper.hidden {
+    transform: translateX(-100%);
+}
+
+#toggle-sidebar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1000; /* Zapewnia, że przycisk pozostanie na wierzchu */
+    background-color: #343a40;
+    color: white;
+    border: none;
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
+    font-size: 1.5rem;
+    margin: 0;
+}
+
+.sidebar-nav {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar-nav li {
+    margin-bottom: 10px; 
+    padding: 10px; 
+}
+
+.sidebar-nav a,
+.sidebar-nav button {
+    padding: 0px;
+    display: block; 
+    text-decoration: none;
+    font-size: 1rem;
+    color: #343a40; 
+    background-color: transparent; 
+    border: none;
+    text-align: left; 
+    cursor: pointer; 
+    transition: background-color 0.3s ease; 
+}
+
+.sidebar-nav a:hover,
+.sidebar-nav button:hover {
+    background-color: #f0f0f0;
+    color: #007bff; 
+}
+
+.sidebar-nav form {
+    margin: 0; 
+    padding: 0; 
+    display: inline;
+}
+
+
+/* TABLES */
+table {
+    margin: 10px;
+    border-collapse: collapse; 
+    width: 100%; 
+}
+
+table td, table th {
+    padding: 8px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+table td input {
+    padding: 0;
+    margin: 0;
+    border: none;
+    outline: none;
+    box-sizing: border-box;
+    border-radius: 0;
+}
+
+.table-container {
+    max-width: 100%;
+    overflow-x: auto; 
+    white-space: nowrap;
+}
+
+.hidden {
+    display: none;
+}

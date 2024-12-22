@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Error{% endblock %}
+
+{% block content %}
+    <h4>{{ error }} ({{status}})</h4>
+    <p>{{ message }}</p>
+{% endblock %}
+
