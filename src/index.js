@@ -20,18 +20,26 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 function manageSidebar() {
-    console.log("MANAGE SIDE BAR")
-    const sidebar = document.querySelector('.sidebar-wrapper');
-    const toggleButton = document.getElementById('toggle-sidebar');
+    const $sidebar = $('.sidebar-wrapper'); 
+    const $toggleButton = $('#toggle-sidebar'); 
+    const $icon = $toggleButton.find('i'); 
 
     const isSidebarHidden = localStorage.getItem('sidebarHidden') === 'true';
     if (isSidebarHidden) {
-        sidebar.classList.add('hidden');
+        $sidebar.addClass('hidden');
+        $icon.removeClass('fa-arrow-left').addClass('fa-arrow-right');
     }
 
-    toggleButton.addEventListener('click', () => {
-        sidebar.classList.toggle('hidden');
-        const isHidden = sidebar.classList.contains('hidden');
+    $toggleButton.on('click', () => {
+        $sidebar.toggleClass('hidden'); // Ukryj/pokaż pasek boczny
+
+        if ($sidebar.hasClass('hidden')) {
+            $icon.removeClass('fa-arrow-left').addClass('fa-arrow-right');
+        } else {
+            $icon.removeClass('fa-arrow-right').addClass('fa-arrow-left');
+        }
+
+        const isHidden = $sidebar.hasClass('hidden');
         localStorage.setItem('sidebarHidden', isHidden);
     });
 }

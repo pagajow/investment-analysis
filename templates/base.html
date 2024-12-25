@@ -13,44 +13,53 @@
 </head>
 
 <body>
-    <header>
-        <div class="container d-flex flex-column">
-            <h1 id="main-header">{% block header %}Investment App{% endblock %}</h1>
-        </div>
-    </header>
-
+    
     <div class="layout">
-        <button id="toggle-sidebar">&#9776;</button>
-        <nav class="sidebar-wrapper">
-            <ul class="sidebar-nav">
-                {% if user.is_authenticated %}
-                    <li><a href="{% url 'company_list' %}">Companies</a></li>
-                    <li><a href="{% url 'new_company' %}">New Company</a></li>
-                    <li>
-                        <span class="sidebar-text">Welcome, {{ user.username }}!</span>
-                    </li>
-                    <li>
-                        <form method="POST" action="{% url 'logout' %}">
-                            {% csrf_token %}
-                            <button type="submit" class="">Logout</button>
-                        </form>
-                    </li>
-                {% else %}
-                    <li><a href="{% url 'login' %}">Login</a></li>
-                    <li><a href="{% url 'register' %}">Register</a></li>
-                {% endif %}
-            </ul>
-        </nav>
-        <main class="main-content">
-            {% block content %}
-            {% endblock %}
-        </main>
+        <div class="sidebar-layout">
+            <button id="toggle-sidebar"><i class="fa-solid fa-arrow-left"></i></button>
+            <nav class="sidebar-wrapper">
+                <ul class="sidebar-nav">
+                    {% if user.is_authenticated %}
+                        <li><a href="{% url 'company_list' %}">Companies</a></li>
+                        <li><a href="{% url 'new_company' %}">New Company</a></li>
+                        <li>
+                            <span class="sidebar-text">Welcome, {{ user.username }}!</span>
+                        </li>
+                        <li>
+                            <form method="POST" action="{% url 'logout' %}">
+                                {% csrf_token %}
+                                <button type="submit" class="">Logout</button>
+                            </form>
+                        </li>
+                    {% else %}
+                        <li><a href="{% url 'login' %}">Login</a></li>
+                        <li><a href="{% url 'register' %}">Register</a></li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+        
+        <div class="content-layout">
+            <header>
+                <h1>{% block header %}Investment App{% endblock %}</h1>
+            </header>
+
+            <div class="content-wrapper">
+                <main>
+                    {% block content %}
+                    {% endblock %}
+                </main>
+
+                <footer>
+                    <p>&copy; 2024 Financial Analysis by Patryk Gajowniczek. All rights reserved.</p>
+                </footer>
+            </div>
+            
+        </div>
     </div>
     
     
-    <footer>
-        <p>&copy; 2024 Financial Analysis by Patryk Gajowniczek. All rights reserved.</p>
-    </footer>
+    
 
     <script>
         window.serverBaseUrl = '{{ request.scheme }}://{{ request.get_host }}';

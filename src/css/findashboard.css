@@ -1,11 +1,10 @@
 .tab-btn.active-tab {
-    color: rgb(105, 105, 105);
-    letter-spacing: 0.6rem;
+    color: rgb(26, 29, 250);
 }
 
 .tab-btn {
     font-size: 1.5rem; 
-    transition: all 0.3s ease; 
+    transition: all 0.7s ease; 
     color: black;
     padding: 16px;
     border: 1px;
