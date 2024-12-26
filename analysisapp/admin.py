@@ -1,6 +1,6 @@
 # Register your models here.
 from django.contrib import admin
-from .models import Company, FinData, AnalystUser
+from .models import Company, FinDataA, AnalystUser
 
 
 @admin.register(AnalystUser)
