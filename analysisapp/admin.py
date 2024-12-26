@@ -1,7 +1,12 @@
 # Register your models here.
 from django.contrib import admin
-from .models import Company
-from .models import FinDataA
+from .models import Company, FinData, AnalystUser
+
+
+@admin.register(AnalystUser)
+class AnalystUserAdmin(admin.ModelAdmin):
+    list_display = ('username', 'email', 'first_name', 'last_name', 'is_staff', 'is_active', 'date_joined')
+    search_fields = ('username', 'email', 'first_name', 'last_name', 'is_active') 
 
 @admin.register(Company)
 class CompanyAdmin(admin.ModelAdmin):

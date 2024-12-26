@@ -4,8 +4,9 @@ from django.conf import settings
 import pandas as pd
 
 class AnalystUser(AbstractUser):
-    pass
     
+    def __str__(self) -> str:
+        return f"{self.username} ({self.email})"
 
 class Company(models.Model):
     user = models.ForeignKey(
