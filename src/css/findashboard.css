@@ -1,14 +1,14 @@
 .tab-btn.active-tab {
-    color: rgb(26, 29, 250);
+    color: #007bff; 
 }
 
 .tab-btn {
     font-size: 1.5rem; 
-    transition: all 0.7s ease; 
     color: black;
-    padding: 16px;
-    border: 1px;
+    padding: 4px 16px;
+    border: none;
     background-color: transparent;
+    transition: color 0.4s ease;
 }
 
 .tab-body {
@@ -37,6 +37,10 @@
 
 #show_report {
     margin: 20px;
+}
+
+.tabs-bar {
+    margin-bottom: 10px;
 }
 
 

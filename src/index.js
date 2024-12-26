@@ -2,6 +2,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap';
 import $ from 'jquery';
 import './css/base.css';
+import './css/tables.css';
 
 
 window.app = window.app || {};
@@ -24,22 +25,20 @@ function manageSidebar() {
     const $toggleButton = $('#toggle-sidebar'); 
     const $icon = $toggleButton.find('i'); 
 
-    const isSidebarHidden = localStorage.getItem('sidebarHidden') === 'true';
+    const isSidebarHidden = localStorage.getItem('sidebar-hidden') === 'true';
     if (isSidebarHidden) {
-        $sidebar.addClass('hidden');
+        $sidebar.addClass('sidebar-hidden');
         $icon.removeClass('fa-arrow-left').addClass('fa-arrow-right');
     }
 
     $toggleButton.on('click', () => {
-        $sidebar.toggleClass('hidden'); // Ukryj/pokaż pasek boczny
-
-        if ($sidebar.hasClass('hidden')) {
+        $sidebar.toggleClass('sidebar-hidden'); // Ukryj/pokaż pasek boczny
+        const isHidden = $sidebar.hasClass('sidebar-hidden');
+        if (isHidden) {
             $icon.removeClass('fa-arrow-left').addClass('fa-arrow-right');
         } else {
             $icon.removeClass('fa-arrow-right').addClass('fa-arrow-left');
         }
-
-        const isHidden = $sidebar.hasClass('hidden');
-        localStorage.setItem('sidebarHidden', isHidden);
+        localStorage.setItem('sidebar-hidden', isHidden);
     });
 }

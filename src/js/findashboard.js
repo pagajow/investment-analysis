@@ -6,11 +6,14 @@ import { getApiUrl } from '../utils'
 let reportData = null;
 let activeTab = 0;
 
+const TAB_NAMSE = ["overview", "big5", "health", "other"];
+
+
 init()
 
 function init() {
     window.addEventListener("resize", () => {
-        drawDashboard(reportData);
+        drawDashboard();
     })
 
     window.addEventListener("ImportCompleted", event => {
@@ -19,7 +22,7 @@ function init() {
         getFindata(getApiUrl(url)).then(data => {
             console.log(data)
             reportData = data;
-            drawDashboard(reportData);
+            drawDashboard();
         })
     })
 
@@ -88,42 +91,28 @@ async function getFindata(url) {
     }
 }
 
+function onTabClick(e){
+    const $clickedTab = $(e.target); 
+    activeTab = $clickedTab.index(); 
 
+    $clickedTab.siblings().removeClass("active-tab");
+    $clickedTab.addClass("active-tab");
 
+    $(".tab-body").empty().addClass("hidden").eq(activeTab).removeClass("hidden");
+    drawTabBodies();
+}
 
-function drawDashboard(data){
-    if (!data) {
-        return;
-    }
-    
-    const findata = data["financial_data"]
-    const big5Data = data.analysis["big5"];
-    const healthData = data.analysis["health"];
-    const dcfData = data.analysis["dcf"];
-
-    const dashboardID = "fin-dashboard";
-    const $finDashboard = $(`#${dashboardID}`);
+function initDashboard(){
+    const $finDashboard = $('#fin-dashboard');
     $finDashboard.empty();
 
     const tabsContainer = $('<div>', {id: "tabs-container", class: "tabs-bar"})
     const tabBodiesContainer = $('<div>', {id: "tabbodies-container", class: "tabs-container"})
+
     $finDashboard.append(tabsContainer)
     $finDashboard.append(tabBodiesContainer)
 
-    function onTabClick(e){
-        const $clickedTab = $(e.target); 
-        activeTab = $clickedTab.index(); 
-    
-        $clickedTab.siblings().removeClass("active-tab");
-        $clickedTab.addClass("active-tab");
-    
-        $(".tab-body").addClass("hidden");
-        $(".tab-body").eq(activeTab).removeClass("hidden");
-        drawDashboard(data)
-    }
-
-    const tabNames = ["overview", "big5", "health", "other"];
-    tabNames.forEach((name, index) => {
+    TAB_NAMSE.forEach((name, index) => {
         tabsContainer.append($('<button>', {
             id: `tab-${name}`,
             class: "tab-btn" + (index===activeTab ? " active-tab" : ""),
@@ -135,6 +124,27 @@ function drawDashboard(data){
             "data-tabname": name,
         }))
     });
+}
+
+function drawDashboard(){
+    if (!reportData) {
+        return;
+    }
+    initDashboard();
+    drawTabBodies();
+}
+
+function drawTabBodies(){
+    if (!reportData) {
+        return;
+    }
+
+    const tabBodiesContainer = $('#tabbodies-container');
+
+    const findata = reportData["financial_data"]
+    const big5Data = reportData.analysis["big5"];
+    const healthData = reportData.analysis["health"];
+    const dcfData = reportData.analysis["dcf"];
 
     const currentTabBody = tabBodiesContainer.children().eq(activeTab)
     if (activeTab == 0) {
@@ -149,8 +159,8 @@ function drawDashboard(data){
     if (activeTab == 3) {
         drawTabOther(currentTabBody, findata);
     }
-
 }
+
 
 function drawTabOverview(parent, big5Data, healthData, dcfData){
     addSummmaryCard(parent, "summary", big5Data, healthData, dcfData)

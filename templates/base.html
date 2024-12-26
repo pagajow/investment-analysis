@@ -13,35 +13,39 @@
 </head>
 
 <body>
-    
     <div class="layout">
         <div class="sidebar-layout">
-            <button id="toggle-sidebar"><i class="fa-solid fa-arrow-left"></i></button>
+            <button id="toggle-sidebar" title="show or hide sidebar"><i class="fa-solid fa-arrow-left"></i></button>
             <nav class="sidebar-wrapper">
-                <ul class="sidebar-nav">
+                <div class="sidebar-top">
+                    <ul class="sidebar-nav">
+                        {% if user.is_authenticated %}
+                            <li><a href="{% url 'company_list' %}">Companies</a></li>
+                            <li><a href="{% url 'new_company' %}">New Company</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+
+                <div class="sidebar-bottom">
                     {% if user.is_authenticated %}
-                        <li><a href="{% url 'company_list' %}">Companies</a></li>
-                        <li><a href="{% url 'new_company' %}">New Company</a></li>
-                        <li>
-                            <span class="sidebar-text">Welcome, {{ user.username }}!</span>
-                        </li>
-                        <li>
-                            <form method="POST" action="{% url 'logout' %}">
-                                {% csrf_token %}
-                                <button type="submit" class="">Logout</button>
-                            </form>
-                        </li>
+                        <span class="sidebar-text">Welcome, {{ user.username }}!</span>
+                        <form method="POST" action="{% url 'logout' %}">
+                            {% csrf_token %}
+                            <button type="submit">Logout</button>
+                        </form>
                     {% else %}
-                        <li><a href="{% url 'login' %}">Login</a></li>
-                        <li><a href="{% url 'register' %}">Register</a></li>
+                        <ul class="sidebar-nav">
+                            <li><a href="{% url 'login' %}">Login</a></li>
+                            <li><a href="{% url 'register' %}">Register</a></li>
+                        </ul>
                     {% endif %}
-                </ul>
+                </div>
             </nav>
         </div>
         
         <div class="content-layout">
             <header>
-                <h1>{% block header %}Investment App{% endblock %}</h1>
+                {% block header %}Investment Analysis App{% endblock %}
             </header>
 
             <div class="content-wrapper">
@@ -59,8 +63,6 @@
     </div>
     
     
-    
-
     <script>
         window.serverBaseUrl = '{{ request.scheme }}://{{ request.get_host }}';
         window.csrfToken = "{{ csrf_token }}";
