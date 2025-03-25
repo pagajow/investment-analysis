@@ -129,7 +129,6 @@ class CompanyResearchAgent():
         self.sumarizedQuestionGraph = None
         self.researchGraph = None
         self.createAgent()
-        self.saveGraphImage(self.researchGraph, "agent_graph")
         
         self.results = None
         
