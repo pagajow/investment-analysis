@@ -21,6 +21,11 @@ git pull origin main
 echo "Activating the Python virtual environment..."
 source $VENV_DIR/bin/activate
 
+echo "Removing all existing packages..."
+pip freeze > all.txt
+pip uninstall -y -r all.txt
+rm all.txt
+
 # Install Python dependencies
 echo "Installing Python dependencies from requirements.txt..."
 pip install -r requirements.txt
