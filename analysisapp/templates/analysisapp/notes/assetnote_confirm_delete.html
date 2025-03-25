@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load static %} 
+
+{% block title %} {% endblock %}
+
+{% block extra_css %} {% endblock %}
+
+{% block header %} {% endblock %}
+
+{% block content %}    
+    <h1>Are you sure you want to delete this note?</h1>
+    <p>{{ note.title }} [{{note.company.name}}]</p>
+
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Delete</button> 
+        <a class="btn btn-secondary" href="{% url 'assetnote_list' company_id=note.company.id %}">Cancel</a>
+    </form>
+    
+{% endblock %}

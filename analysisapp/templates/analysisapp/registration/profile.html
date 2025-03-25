@@ -1,0 +1,35 @@
+{% extends "base.html" %} 
+{% load static %} 
+
+{% block header %}Profile{% endblock %}
+
+{% block content %}
+    {% for field in form %}
+        {% for error in field.errors %}
+            <div class="error">{{ error }}</div>
+        {% endfor %}
+    {% endfor %}
+
+
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary w-100 mt-3">Save</button> 
+    </form>
+
+    {% if not user.is_verified %}
+        <p>Your account has not been verified yet.</p>
+        <a href="{% url 'send_verification_token' %}" class="btn btn-primary w-100 mt-3">Wyślij ponownie link weryfikacyjny</a>
+    {% endif %}
+
+    <div class="mt-4">
+        <hr> 
+    </div>
+    <a href="{% url 'change_password' %}" class="btn btn-secondary w-100 mt-3">Change Password</a>
+
+    <div class="mt-4">
+        <hr> 
+    </div>
+    <a href="{% url 'delete_account' %}" class="btn btn-danger w-100 mt-3">Delete Account</a>
+
+{% endblock %}

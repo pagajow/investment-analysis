@@ -5,12 +5,15 @@
 
 {% block extra_css %}<!-- import css -->{% endblock %}
 
-{% block header %}Process CSV data{% endblock %}
+{% block header %}
+    <a href="{% url 'financial_data' company_id=company.id %}" class="btn">
+        <i class="fa-solid fa-reply"></i> Finantial data
+    </a>
+    Process CSV data: {{ company.name }} ({{ company.ticker }}) / {{ company.currency }}
+{% endblock %}
 
 {% block content %}
     <Import data-modules="processcsvdata"></Import>
-
-    <h2>{{ company.name }} ({{ company.ticker }}) / {{ company.currency }}</h2>
 
     <ul id="field_list" style="display: none;">
         {% for field in fields %}
@@ -19,10 +22,13 @@
     </ul>
 
     <div class="d-flex flex-wrap align-items-center mt-3">
-        <a href="{% url 'financial_data_list' company_id=company.id %}" class="btn me-3">
-            <i class="fa-solid fa-arrow-left"></i> Back to Financial Data
-        </a>
-        <button class="btn btn-primary" id="save-data-btn" type="button">Save data</button>
+        <button 
+            class="btn btn-secondary me-3 mb-3" 
+            id="btn-msnmoney"
+            type="button"
+            data-bs-toggle="tooltip" 
+            title="The button transforms financial data into the format used on the MSN Money website. It converts numbers expressed in thousands, millions, and billions into full numeric values by removing abbreviations such as K, M, and B.">
+        Format MSN Money</button>
     </div>
     
     <div class="table-container">
@@ -66,14 +72,9 @@
         </label>
     </div>
 
-    <div class="d-flex flex-wrap align-items-center mt-3 mb-3">
-        <button 
-            class="btn btn-secondary me-3 mb-3" 
-            id="btn-msnmoney"
-            type="button"
-            data-bs-toggle="tooltip" 
-            title="The button transforms financial data into the format used on the MSN Money website. It converts numbers expressed in thousands, millions, and billions into full numeric values by removing abbreviations such as K, M, and B.">
-        Format MSN Money</button>
+    
+    <div class="d-flex flex-wrap align-items-center">
+        <button class="btn btn-primary w-100 mt-3" id="save-data-btn" type="button">Save data</button>
     </div>
 
     

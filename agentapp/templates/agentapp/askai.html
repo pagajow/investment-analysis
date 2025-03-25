@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load static %} 
+
+{% block title %}Ask AI{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'analysisapp/css/askai.css' %}">  
+{% endblock %}
+
+{% block header %}Ask AI{% endblock %}
+
+{% block content %}
+    <Import data-modules="askai"></Import>
+    
+    <div id="chat-container" class="chat-container" data-company-id="{{company.id}}">
+        {% if is_openai_api_key %}
+            {% if not is_google_api_key or not is_google_cse_id %}
+                <p class="hint-msg">If you want AI to search the internet, you need to obtain an API key for Google Custom Search and a Search Engine ID (CSE ID). Both should be saved in your user <a href="{% url 'profile' %}">profile</a>.</p>
+            {% endif %}
+
+            {% if company is None %}
+                <h4>Ask AI</h4>
+            {% else %}
+                <h4>Ask AI about: {{company.name}}</h4>
+            {% endif %}
+
+            <div id="chat-window" class="chat-window">
+                <!-- Historia czatu będzie dynamicznie dodawana tutaj -->
+            </div>
+            
+            <form id="chat-form" class="chat-form">
+                <input type="text" id="user-input" placeholder="Type your message..." autocomplete="off">
+                <button type="submit">Send</button>
+            </form>
+            
+            <button id="test-1" class="test-chat">Test Search</button>
+            <button id="test-2" class="test-chat">Test Quotations</button>
+        {% else %}
+            <p class="hint-msg">If you want to use AI features based on LLMs, you need to obtain an API key from OpenAI and save it to your user <a href="{% url 'profile' %}">profile</a>.</p>
+        {% endif %}
+        
+        
+    </div>
+{% endblock %}

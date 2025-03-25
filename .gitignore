@@ -23,6 +23,7 @@ __pycache__/
 *.pyc
 *.pyo
 *.pyd
+.ipynb_checkpoints/
 
 # Migrations, if generated automatically
 **/migrations/*.pyc
@@ -47,3 +48,4 @@ Thumbs.db
 
 
 githubwebhook.py
+install.md

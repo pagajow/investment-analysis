@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+{% load static %} 
+
+{% block title %}Home{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'analysisapp/css/home.css' %}">  
+{% endblock %}
+
+{% block header %}Welcome to Investment Analysis{% endblock %}
+
+{% block content %}    
+    <div class="container mt-4 home-container">
+
+        {% if user.is_authenticated %}
+            <div class="card shadow-sm mt-4">
+                <div class="card-body">
+                    <h2 class="card-title text-center">Favorite assets</h2>
+                    <ul class="list-group text-start">
+                        {% for company in favorite_companies %}
+                            <li class="list-group-item">
+                                <a href="{% url 'financial_data' company.id %}" class="text-decoration-none">
+                                    {{ company.name }} ({{ company.ticker }})
+                                </a>
+                                <p class="mb-0 text-muted">
+                                    {{ company.description|slice:":200" }}{% if company.description|length > 200 %}...{% endif %}
+                                </p>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card shadow-sm mt-4">
+                <div class="card-body">
+                    <h2 class="card-title text-center">Favorite notes</h2>
+                    <ul class="list-group text-start">
+                        {% for note in favorite_notes %}
+                            <li class="list-group-item">
+                                <a href="{% url 'assetnote_detail' note.company.id note.id %}" class="text-decoration-none">
+                                    {{ note.title }}
+                                </a>
+                                <p class="mb-0 text-muted">
+                                    {{ note.content|slice:":200" }}{% if note.content|length > 200 %}...{% endif %}
+                                </p>
+                            </li>
+                        {% endfor %}
+                    <ul>
+                </div>
+            </div>
+
+
+            <!-- 🔹 Ostrzeżenia o kluczach API -->
+            {% if not is_openai_api_key %}
+                <div class="alert alert-warning" role="alert">
+                    <strong>AI Features Unavailable:</strong> To use AI-based reports and predictions, you need an OpenAI API key. Save it in your <a href="{% url 'profile' %}" class="alert-link">profile settings</a>.
+                </div>
+            {% endif %}
+            {% if not is_google_api_key or not is_google_cse_id %}
+                <div class="alert alert-warning" role="alert">
+                    <strong>Internet Search Disabled:</strong> To enable AI-powered web searches, you need to provide a Google Custom Search API key and a Search Engine ID (CSE ID). Save them in your <a href="{% url 'profile' %}" class="alert-link">profile settings</a>.
+                </div>
+            {% endif %}
+   
+        {% else %}
+            <!-- 🔹 Informacje dla niezalogowanych użytkowników -->
+            <div class="card shadow-sm mt-4">
+                <div class="card-body">
+                    <h2 class="card-title text-center">Investment Analysis Platform</h2>
+                    <p class="text-center">Our platform provides powerful tools for data-driven investment research.</p>
+
+                    <div class="row mt-4">
+                        <div class="col-md-6">
+                            <h5>Company Tracking</h5>
+                            <p>Add companies and track their financial reports over time, ensuring you have up-to-date data for decision-making.</p>
+                        </div>
+                        <div class="col-md-6">
+                            <h5>Fundamental Analysis</h5>
+                            <p>Use customizable financial filters to screen stocks based on key indicators such as revenue growth, P/E ratio, and profitability.</p>
+                        </div>
+                    </div>
+
+                    <div class="row mt-4">
+                        <div class="col-md-6">
+                            <h5>Financial Data Visualization</h5>
+                            <p>Generate charts to better understand financial trends and key performance indicators.</p>
+                        </div>
+                        <div class="col-md-6">
+                            <h5>AI-Powered Reports</h5>
+                            <p>Utilize AI-driven analysis to generate research reports and assist in making investment decisions.</p>
+                        </div>
+                    </div>
+
+                    <p class="text-center mt-4">Create an account to store your financial data and access all features.</p>
+                </div>
+            </div>
+
+            <!-- 🔹 Formularz logowania/rejestracji -->
+            <div class="text-center mt-4">
+                <h3>Get Started</h3>
+                <div class="d-flex justify-content-center mt-3">
+                    <a href="{% url 'login' %}" class="btn btn-primary me-2">Login</a>
+                    <a href="{% url 'register' %}" class="btn btn-secondary">Register</a>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

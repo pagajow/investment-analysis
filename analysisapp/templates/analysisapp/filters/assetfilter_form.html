@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load static %} 
+
+{% block title %}{% if object %}Edit{% else %}Create{% endif %} filter{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'analysisapp/css/company_list.css' %}">  
+{% endblock %}
+
+{% block header %}{% if object %}Edit{% else %}Create{% endif %} filter{% endblock %}
+
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary  w-100 mt-3">{% if object %}Sava{% else %}Create{% endif %}</button>
+    </form>
+{% endblock %}
+
+
+{% block extra_js %}
+    <script src="{% static 'analysisapp/js/filters/assetfilter_form.js' %}"></script>
+{% endblock %}

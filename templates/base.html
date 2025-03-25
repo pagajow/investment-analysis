@@ -15,20 +15,26 @@
 <body>
     <div class="layout">
         <div class="sidebar-layout">
-            <button id="toggle-sidebar" title="show or hide sidebar"><i class="fa-solid fa-arrow-left"></i></button>
+            <button id="toggle-sidebar" title="show or hide sidebar"><i class="fa-solid fa-bars"></i></button>
             <nav class="sidebar-wrapper">
                 <div class="sidebar-top">
                     <ul class="sidebar-nav">
-                        {% if user.is_authenticated %}
+                        
+                        <li><a href="{% url 'home' %}">Home</a></li>
+                        {% if user.is_authenticated and user.is_verified%}
                             <li><a href="{% url 'company_list' %}">Companies</a></li>
-                            <li><a href="{% url 'new_company' %}">New Company</a></li>
+                            <li><a href="{% url 'company_create' %}">New Company</a></li>
+                            <li><a href="{% url 'filter_list' %}">Filters</a></li>
+                            <li><a href="{% url 'agentapp:ai_research' %}">AI Research</a></li>
+                        {% else %}
+                            <!-- CODE HERE -->
                         {% endif %}
                     </ul>
                 </div>
 
                 <div class="sidebar-bottom">
                     {% if user.is_authenticated %}
-                        <span class="sidebar-text">Welcome, {{ user.username }}!</span>
+                        <span class="sidebar-text">Welcome, <a href="{% url 'profile' %}">{{ user.username }}</a></span>
                         <form method="POST" action="{% url 'logout' %}">
                             {% csrf_token %}
                             <button type="submit">Logout</button>
@@ -67,6 +73,24 @@
         window.serverBaseUrl = '{{ request.scheme }}://{{ request.get_host }}';
         window.csrfToken = "{{ csrf_token }}";
     </script>
+
+    <!-- Universal Modal (Popup) -->
+    <div id="universal-modal" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 id="modal-title" class="modal-title">Modal Title</h5>
+                </div>
+                <div id="modal-body" class="modal-body">
+                    <!-- Tutaj dynamicznie wstawiana treść (tekst, wykresy itp.) -->
+                </div>
+                <div id="modal-footer" class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="{% static 'dist/bundle.js' %}"></script>
     {% block extra_js %}{% endblock %}
 </body>

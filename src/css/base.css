@@ -18,8 +18,9 @@ body {
 header {
     display: inline;
     background-color: #ececec;
-    padding: 10px 20px;
     width: 100%;
+    padding-top: 10px;
+    padding-bottom: 10px;
     text-align: begin;
     font-size: x-large;
     color: black;
@@ -99,9 +100,9 @@ footer {
 .sidebar-bottom {
     display: flex;
     flex-direction: column;
-    align-items: flex-start; /* Wyrównanie zawartości do lewej */
+    align-items: flex-start; 
     padding-top: 10px;
-    border-top: 1px solid #ddd; /* Opcjonalna linia oddzielająca */
+    border-top: 1px solid #ddd; 
 }
 
 .content-layout {
@@ -173,3 +174,9 @@ footer {
     display: none;
 }
 
+.hint-msg {
+    margin: 10px;
+    color: gray;
+    font-style: italic;
+    text-align: center;
+}

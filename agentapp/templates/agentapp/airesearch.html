@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}AI Research{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'agentapp/css/airesearch.css' %}">
+{% endblock %}
+
+{% block header %}AI Research{% endblock %}
+
+{% block content %}
+    <Import data-modules="airesearch"></Import>
+
+    <!-- Karta Bootstrapa -->
+    <div class="card shadow-sm mt-4">
+        <div class="card-body">
+            <!-- Wybór firmy -->
+            <div class="form-group mb-3">
+                <label for="company-select" class="form-label">Select an asset:</label>
+                <select id="company-select" class="form-control" {% if preselected_company_id %} disabled {% endif %}>
+                    <option value="">--- Choose asset ---</option>
+                    {% for company in user_companies %}
+                        <option value="{{ company.id }}" 
+                            {% if preselected_company_id and company.id|stringformat:"s" == preselected_company_id|stringformat:"s" %}
+                                selected
+                            {% endif %}>
+                            {{ company.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+                {% if preselected_company_id %}
+                    <!-- Ukryte pole, jeśli <select> jest disabled -->
+                    <input type="hidden" id="company-selected-hidden" value="{{ preselected_company_id }}">
+                {% endif %}
+            </div>
+
+            <!-- Upload plików -->
+            <div class="form-group mb-3">
+                <label for="file-upload" class="form-label">Upload supporting documents (PDF, TXT, max 10 files):</label>
+                <input type="file" id="file-upload" class="form-control" multiple accept=".pdf,.txt">
+                <small class="form-text text-muted">You can upload up to 10 files.</small>
+                <ul id="file-list" class="file-list"></ul>
+            </div>
+
+            <!-- Pole zapytania -->
+            <div class="form-group mb-3">
+                <label for="query-text" class="form-label">Research query:</label>
+                <textarea id="query-text" class="form-control" maxlength="2000" rows="12" placeholder="Enter your query: Provide clear, specific questions to guide your asset analysis, preferably writing each question on a new line."></textarea>
+                <small class="form-text text-muted">
+                    <span id="char-count">2000</span> characters remaining.
+                </small>
+            </div>
+
+            <!-- Przycisk wysyłający formularz -->
+            <button id="submit-research" class="btn btn-primary w-100 mt-3">Submit Research</button>
+
+        </div>
+    </div>
+
+    <!-- Sekcja statusu (spinner, błąd lub sukces) -->
+    <div id="status-messages" class="status-messages"></div>
+{% endblock %}
+
+{% block extra_js %}
+{% endblock %}

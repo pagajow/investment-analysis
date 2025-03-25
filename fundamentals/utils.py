@@ -1,13 +1,15 @@
 import numpy as np
 
 def get_cagr(values: np.array):
-    """ compound annual growth rate (CAGR) """
-    cagr = (values[-1] / values[0]) ** (1/(len(values) - 1)) - 1 
-    return cagr
-def predict_cagr(values: np.array, years:int=4):
+    """ Compound Annual Growth Rate (CAGR) """
+    if len(values) < 2:
+        return 0
+    return (values[-1] / values[0]) ** (1/(len(values) - 1)) - 1
+
+def predict_cagr(values: np.array, years: int = 4):
     cagr = get_cagr(values)
-    #print("cagr", cagr)
-    return [values[-1] * ((1 + cagr) ** year) for year in range(1, years + 1)]
+    last_value = values[-1]
+    return [last_value * ((1 + cagr) ** i) for i in range(1, years + 1)]
 
 def get_geomean(values: np.array):
     ratios = values[1:] / values[:-1] -1

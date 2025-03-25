@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load static %} 
+{% load custom_filters %}
+
+{% block title %}Asset Filters{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'analysisapp/css/company_list.css' %}">  
+{% endblock %}
+
+{% block header %}Asset Filters{% endblock %}
+
+
+
+{% block content %}
+    <div class="m-2">
+        <div>
+            <a href="{% url 'filter_create'  %}" class="btn btn-primary w-100 mt-3">Create new filter</a>
+        </div>
+
+        {% for filter in filters %}
+            <div class="card shadow-sm mt-3">
+                <div class="card-body">
+                    <h5 class="card-title">{{ filter.data| upper | replace_underscore}} (weight: {{ filter.weight }})</h5>
+                    <p class="text-muted">"{{ filter.function | replace_underscore }}" over {{ filter.periods }} years</p>
+                    
+                    {% if filter.check_type == "above" %}
+                        <p><strong>Condition:</strong> {{filter.check_type}} - value must be above <strong>{{ filter.value1 }}</strong></p>
+                    {% elif filter.check_type == "below" %}
+                        <p><strong>Condition:</strong> {{filter.check_type}} - value must be below <strong>{{ filter.value1 }}</strong></p>
+                    {% elif filter.check_type == "range" %}
+                        <p><strong>Condition:</strong> {{filter.check_type}} - value must be between <strong>{{ filter.value1 }}</strong> and <strong>{{ filter.value2 }}</strong></p>
+                    {% elif filter.check_type == "beyond" %}
+                        <p><strong>Condition:</strong> {{filter.check_type}} - value must be outside the range <strong>{{ filter.value1 }}</strong> andto <strong>{{ filter.value2 }}</strong></p>
+                    {% endif %}
+
+                    <div class="d-flex">
+                        <a href="{% url 'filter_edit' filter.pk %}" class="btn btn-secondary btn-sm mx-1">Edit</a>
+                        <a href="{% url 'filter_delete' filter.pk %}" class="btn btn-danger btn-sm mx-1">Delete</a>
+                    </div>
+                </div>
+            </div>
+
+        {% empty %}
+            <p>No filters found.</p>
+        {% endfor %}
+    </div>
+
+    <script id="config-data" type="application/json">
+        {{ config | safe }}
+    </script>
+{% endblock %}
+

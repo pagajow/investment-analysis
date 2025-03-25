@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load static %} 
+
+{% block title %}
+  Notes for company: {{ company.name }}
+{% endblock %}
+
+{% block extra_css %} {% endblock %}
+
+{% block header %}
+  <a href="{% url 'financial_data' company.id %}" class="btn">
+    <i class="fa-solid fa-reply"></i> Finantial data
+  </a>
+  Notes for company: {{ company.name }}
+{% endblock %}
+
+{% block content %}
+  <div class="m-2">
+    <div>
+      <a href="{% url 'assetnote_create' company_id=company.id %}" class="btn btn-primary w-100 mt-3">Create new note</a>
+    </div>
+
+    {% for note in notes %}
+      <div class="card shadow-sm mt-3">
+        <div class="card-body">
+            <h5 class="card-title">
+              <a href="{% url 'assetnote_detail' company_id=company.id pk=note.id %}" class="text-decoration-none">{{ note.title }}</a>
+            </h5>
+            <p>{{ note.created|date:"Y-m-d H:i" }}</p>
+            <a href="{% url 'assetnote_edit' company_id=company.id pk=note.id %}" class="btn btn-secondary btn-sm">Edit</a>
+            <a href="{% url 'assetnote_delete' company_id=company.id pk=note.id %}" class="btn btn-danger btn-sm">Delete</a>
+        </div>
+      </div>
+
+    {% empty %}
+        <p>No notes.</p>
+    {% endfor %}
+  </div>
+
+
+{% endblock %}

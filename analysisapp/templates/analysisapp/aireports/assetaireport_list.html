@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load static %} 
+
+{% block title %}AI reports for company: {{ company.name }}{% endblock %}
+
+{% block extra_css %} {% endblock %}
+
+{% block header %}
+  <a href="{% url 'financial_data' company.id %}" class="btn me-2">
+    <i class="fa-solid fa-reply"></i> Finantial data
+  </a>
+  AI reports for company: {{ company.name }}
+{% endblock %}
+
+{% block content %}    
+  
+
+  {% for aireport in aireports %}
+    <div class="card shadow-sm m-2">
+      <div class="card-body">
+          <p>{{ aireport.created|date:"Y-m-d H:i" }}</p>
+          <a href="{% url 'assetaireport_detail' company_id=company.id pk=aireport.id %}" class="btn btn-primary btn-sm">View</a>
+          <a href="{% url 'assetaireport_delete' company_id=company.id pk=aireport.id %}" class="btn btn-danger btn-sm">Delete</a>
+      </div>
+    </div>
+
+  {% empty %}
+      <p>No reports.</p>
+  {% endfor %}
+
+
+{% endblock %}

@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load static %} 
+{% load custom_filters %}
+
+{% block title %}Financial Data{% endblock %}
+
+{% block header %}
+    <a href="{% url 'company_list' %}" class="btn">
+        <i class="fa-solid fa-reply"></i> Companies
+    </a>
+    Financial Data: {{ company.name }} ({{ company.ticker }}) / {{ company.currency }}
+{% endblock %}
+
+{% block content %}
+    <Import data-modules="findashboard"></Import>    
+    
+    <div class="d-flex flex-wrap align-items-center mt-3">
+        <a href="{% url 'assetnote_list' company.id %}" class="btn me-2">
+            <i class="fa-solid fa-comment-dots"></i> Notes
+        </a>
+
+        {% if company.is_company %}
+            <a href="{% url 'agentapp:ai_research_company' company.id %}" class="btn me-2">
+                <i class="fa-solid fa-magnifying-glass"></i> AI Research
+            </a>
+
+            <a href="{% url 'assetaireports_list' company.id %}" class="btn me-2">
+                <i class="fa-solid fa-note-sticky"></i> AI Reports
+            </a>
+
+            <a href="{% url 'edit_financial_data' company.id %}" class="btn me-2">
+                <i class="fa-solid fa-table"></i> Edit anual data
+            </a>
+            
+            <button id="download_financial_data" class="btn me-2">
+                <i class="fa-solid fa-cloud-arrow-down"></i> Download data
+            </button>
+
+            <form id="file-upload-form" class="d-flex align-items-center" method="POST" enctype="multipart/form-data" action="{% url 'upload-financial-data' company_id=company.id %}" data-company-id="{{company.id}}">
+                {% csrf_token %}
+                <input type="file" id="file-input" name="file" accept=".csv" class="form-control  me-3" style="width: auto;">
+                <button type="submit" id="upload-file-btn" class="btn btn-primary">Process</button>
+            </form>
+        {% endif %}
+    </div>
+    
+    <hr>
+
+    <div id="fin-dashboard" data-company-id="{{company.id}}"></div>
+
+{% endblock %}
+
+
+{% block extra_js %}
+    
+
+{% endblock %}

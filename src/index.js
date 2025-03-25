@@ -1,12 +1,14 @@
+import $ from 'jquery';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap';
-import $ from 'jquery';
 import './css/base.css';
 import './css/tables.css';
+import { showModal } from './utils';
 
 
 window.app = window.app || {};
 window.app["$"] = $;
+window.app["showModal"] = showModal;
 
 // Dinamic import based on custom html tag <Import data-modeles="module1 module2 ..."> and atribute "data-modules"
 import { loadImports } from "./imports.js";
@@ -32,13 +34,28 @@ function manageSidebar() {
     }
 
     $toggleButton.on('click', () => {
-        $sidebar.toggleClass('sidebar-hidden'); // Ukryj/pokaż pasek boczny
+        $sidebar.toggleClass('sidebar-hidden'); 
         const isHidden = $sidebar.hasClass('sidebar-hidden');
         if (isHidden) {
-            $icon.removeClass('fa-arrow-left').addClass('fa-arrow-right');
+           showSidebar();
         } else {
-            $icon.removeClass('fa-arrow-right').addClass('fa-arrow-left');
+            hideSidebar();
         }
         localStorage.setItem('sidebar-hidden', isHidden);
     });
+}
+
+function hideSidebar(){
+    const $sidebar = $('.sidebar-wrapper'); 
+    const $toggleButton = $('#toggle-sidebar'); 
+    const $icon = $toggleButton.find('i'); 
+
+    $icon.removeClass('fa-bars').addClass('fa-bars');
+}
+function showSidebar(){
+    const $sidebar = $('.sidebar-wrapper'); 
+    const $toggleButton = $('#toggle-sidebar'); 
+    const $icon = $toggleButton.find('i'); 
+    
+    $icon.removeClass('fa-bars').addClass('fa-bars');
 }

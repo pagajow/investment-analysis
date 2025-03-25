@@ -9,7 +9,10 @@ module.exports = {
         publicPath: '/static/dist/',
     },
     resolve: {
-        extensions: ['.js', '.ts']
+        extensions: ['.js', '.ts'],
+        fallback: {
+            "os": require.resolve("os-browserify/browser")
+        }
     },
     module: {
         rules: [

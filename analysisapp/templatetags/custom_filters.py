@@ -13,3 +13,7 @@ def get_field_name(obj:str):
     if len(obj) > 0:
         obj = obj[0].upper() + obj[1:]
     return obj
+
+@register.filter
+def replace_underscore(value):
+    return value.replace("_", " ") if isinstance(value, str) else value

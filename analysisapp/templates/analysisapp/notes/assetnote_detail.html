@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load static %} 
+
+{% block title %}Note detail{% endblock %}
+
+{% block extra_css %} 
+    <link rel="stylesheet" href="{% static 'analysisapp/css/markdown.css' %}">
+{% endblock %}
+
+{% block header %}Note detail{% endblock %}
+
+{% block content %}    
+    <a href="{% url 'assetnote_list' note.company.id %}" class="btn me-2">
+        <i class="fa-solid fa-reply"></i> Notes
+    </a>
+    <h1 class="mb-4">{{ note.title }}</h1>
+    <hr>
+    <article class="markdown-body m-3">{{ rendered_markdown | safe }}</article>
+    <p class="mt-4 text-end">Created on: {{ note.created }}</p>
+    <div class="mb-3">
+        <a href="{% url 'assetnote_edit' company_id=note.company.id pk=note.id %}" class="btn btn-secondary btn-sm">Edit</a>
+        <a href="{% url 'assetnote_delete' company_id=note.company.id pk=note.id %}" class="btn btn-danger btn-sm">Delete</a>
+    </div>
+
+{% endblock %}

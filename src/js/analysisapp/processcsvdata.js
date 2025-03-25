@@ -1,9 +1,9 @@
 import $ from 'jquery';
-import { getApiUrl } from '../utils'
+import { getApiUrl } from '../../utils'
 
 
 let fields = [];
-let selectedFields = {}; // Przechowuje przypisania kolumn do pól
+let selectedFields = {}; 
 
 window.addEventListener("ImportCompleted", event => {
     $("#field_list li").each((index, element) => fields.push($(element).data('field')));
@@ -36,8 +36,8 @@ function formatDataMSNMoney(event) {
 }
 
 function onSelectionChange(event) {
-    const selectedField = $(this).val(); // Wybrana wartość w danej kolumnie
-    const column = $(this).parent().data("column"); // Nazwa kolumny CSV
+    const selectedField = $(this).val(); 
+    const column = $(this).parent().data("column"); 
 
     this.setAttribute("title", selectedField || "None");
 
@@ -60,7 +60,7 @@ function onSelectionChange(event) {
 }
 
 function sendData(event) {
-    const data = {}; // Obiekt do przechowywania danych
+    const data = {}; 
     
     const overwriteAll = document.getElementById("overwrite-all").checked;
     const dataToSend = { 
@@ -68,23 +68,18 @@ function sendData(event) {
         "company_id": $("#raw-data-table").data("company-id"),
         "overwrite_all": overwriteAll ? 1 : 0,
     };
-    const table = $(".table tbody"); // Pobierz ciało tabeli
+    const table = $(".table tbody"); 
 
-    // Zainicjuj strukturę danych dla każdego pola modelu
     Object.values(selectedFields).forEach(field => {
-        data[field] = []; // Przygotuj pustą listę dla każdego pola
+        data[field] = []; 
     });
 
-    // Iteruj po wierszach tabeli
     table.find("tr").each(function() {
         const cells = $(this).find("input");
 
-        // Iteruj po powiązaniach kolumn i pól modelu
         Object.entries(selectedFields).forEach(([columnName, fieldName]) => {
-            // Znajdź indeks kolumny na podstawie nazwy
             const columnIndex = $(`#raw-data-table thead th[data-column="${columnName}"]`).index();
 
-            // Pobierz wartość komórki z odpowiedniego indeksu
             if (columnIndex !== -1) {
                 const cellValue = $(cells[columnIndex]).val().trim();
                 data[fieldName].push(cellValue);
@@ -134,14 +129,14 @@ function sendDataToServer(data) {
     .then(response => response.json())
     .then(data => {
         if (data.status === 'success') {
-            console.log('Dane zapisane pomyślnie.');
+            console.log('Data saved successfully.');
             window.location.href = data.redirect_url;
         } else {
-            console.error('Błąd podczas zapisywania danych:', data);
+            console.error('Error while saving data:', data);
         }
     })
     .catch((error) => {
-        console.error('Błąd:', error);
+        console.error('Error:', error);
     });
 }
 

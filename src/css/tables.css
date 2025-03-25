@@ -2,7 +2,8 @@
 table {
     margin: 10px;
     border-collapse: collapse; 
-    width: 100%; 
+    width: auto; 
+    max-width: 100%; 
 }
 
 table td, table th {
