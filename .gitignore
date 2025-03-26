@@ -36,8 +36,6 @@ build/
 static/dist/
 staticfiles/
 
-# Static files (if generated automatically)
-static/
 
 # Media files (if created dynamically)
 media/
@@ -47,5 +45,6 @@ media/
 Thumbs.db
 
 
+deploy.sh
 githubwebhook.py
 install.md

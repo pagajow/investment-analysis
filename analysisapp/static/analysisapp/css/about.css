@@ -1,0 +1,19 @@
+.disclaimer {
+    font-style: italic;
+    font-size: 0.9em;
+    margin-bottom: 20px;
+    color: #555;
+}
+.about-section {
+    margin-bottom: 30px;
+}
+.about-section h2 {
+    margin-top: 30px;
+    font-size: 1.6em;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 8px;
+}
+.about-section p {
+    margin-top: 10px;
+    line-height: 1.6;
+}
