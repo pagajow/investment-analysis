@@ -31,9 +31,6 @@
             <a href="{% url 'assetnote_delete' company_id=company.id pk=note.id %}" class="btn btn-danger btn-sm">Delete</a>
         </div>
       </div>
-
-    {% empty %}
-        <p>No notes.</p>
     {% endfor %}
   </div>
 

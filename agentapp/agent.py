@@ -30,7 +30,6 @@ from langgraph.constants import Send
 from .prompts import *
 
 
-
 MODEL_4o = "gpt-4o"
 MODEL_4o_mini = "gpt-4o-mini"
 MODEL_o3_mini = "o3-mini"
@@ -52,7 +51,7 @@ QUESTIONS = [
 
 
 def sleep():
-    time.sleep(5)
+    time.sleep(1)
     
 @dataclass
 class Analyst:

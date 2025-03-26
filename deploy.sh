@@ -21,10 +21,11 @@ git pull origin main
 echo "Activating the Python virtual environment..."
 source $VENV_DIR/bin/activate
 
-echo "Removing all existing packages..."
-pip freeze > all.txt
-pip uninstall -y -r all.txt
-rm all.txt
+# Only if you need clear unused modules:
+#echo "Removing all existing packages..."
+#pip freeze > all.txt
+#pip uninstall -y -r all.txt
+#rm all.txt
 
 # Install Python dependencies
 echo "Installing Python dependencies from requirements.txt..."
@@ -33,7 +34,9 @@ pip install -r requirements.txt
 # Build frontend assets using Node.js
 echo "Building frontend assets with Node.js..."
 npm install
-npm run build
+
+# Commented out in case of low server RAM. Build the frontend locally and copy the built files manually before running this script.
+#npm run build
 
 # Collect static files for Django
 echo "Collecting Django static files..."

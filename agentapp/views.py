@@ -46,7 +46,7 @@ class AIResearchView(LoginRequiredMixin, View):
             return JsonResponse({"error": "You can upload up to 10 files."}, status=400)
 
         agent = CompanyResearchAgent(user, company_id, query, uploaded_files)
-        results = agent.generateTestReport()
+        results = agent.generateReport()
         report_content = results.get("report")
         errors = results.get("errors", [])
 

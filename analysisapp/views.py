@@ -67,6 +67,10 @@ class HomeView(View):
 
         return render(request, self.template_name, context)
 
+class AboutView(View):
+    template_name = 'analysisapp/about.html'
+    def get(self, request, *args, **kwargs):
+        return render(request, self.template_name, {})
 
 class CustomLoginView(LoginView):
     authentication_form = CustomLoginForm  
