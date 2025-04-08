@@ -10,12 +10,12 @@
 {% block header %}Welcome to Investment Analysis{% endblock %}
 
 {% block content %}    
-    <div class="container mt-4 home-container">
+    <div class="home-container">
 
         {% if user.is_authenticated %}
-            <div class="card shadow-sm mt-4">
+            <div class="mt-4">
                 <div class="card-body">
-                    <h2 class="card-title text-center">Favorite assets</h2>
+                    <h4 class="card-title text-start">Favorite assets</h4>
                     <ul class="list-group text-start">
                         {% for company in favorite_companies %}
                             <li class="list-group-item">
@@ -31,9 +31,9 @@
                 </div>
             </div>
 
-            <div class="card shadow-sm mt-4">
+            <div class="mt-4">
                 <div class="card-body">
-                    <h2 class="card-title text-center">Favorite notes</h2>
+                    <h4 class="card-title text-start">Favorite notes</h4>
                     <ul class="list-group text-start">
                         {% for note in favorite_notes %}
                             <li class="list-group-item">
@@ -42,6 +42,24 @@
                                 </a>
                                 <p class="mb-0 text-muted">
                                     {{ note.content|slice:":200" }}{% if note.content|length > 200 %}...{% endif %}
+                                </p>
+                            </li>
+                        {% endfor %}
+                    <ul>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <div class="card-body">
+                    <h4 class="card-title text-start">Favorite reports</h4>
+                    <ul class="list-group text-start">
+                        {% for report in favorite_reports %}
+                            <li class="list-group-item">
+                                <a href="{% url 'finreport_detail' report.id %}" class="text-decoration-none">
+                                    {{ report.title }}
+                                </a>
+                                <p class="mb-0 text-muted">
+                                    {{ report.content|slice:":200" }}{% if report.content|length > 200 %}...{% endif %}
                                 </p>
                             </li>
                         {% endfor %}

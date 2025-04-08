@@ -13,6 +13,13 @@
     <a href="{% url 'finreports_list' %}" class="btn me-2">
         <i class="fa-solid fa-reply"></i> Reports
     </a>
+    <h1 class="mb-4">{{ report.title }}</h1>
+    <hr>
     <article class="markdown-body m-3">{{ rendered_markdown | safe }}</article>
     <p class="mt-4 text-end">Created on: {{ aireport.created }}</p>
+
+    <div class="mb-3">
+        <a href="{% url 'finreport_edit' pk=report.id %}" class="btn btn-secondary btn-sm">Edit</a>
+        <a href="{% url 'finreport_delete' pk=report.id %}" class="btn btn-danger btn-sm">Delete</a>
+    </div>
 {% endblock %}

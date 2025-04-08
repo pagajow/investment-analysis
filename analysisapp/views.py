@@ -49,6 +49,7 @@ class HomeView(View):
         if user.is_authenticated:
             favorite_companies = Company.objects.filter(user=user, favorite=True).order_by("name")
             favorite_notes = AssetNote.objects.filter(company__user=user, favorite=True).order_by("title")
+            favorite_reports = FinReport.objects.filter(user=user, favorite=True).order_by("title")
             context = {
                 "is_user": True,
                 "is_openai_api_key": bool(user.openai_api_key),
@@ -56,6 +57,7 @@ class HomeView(View):
                 "is_google_cse_id": bool(user.google_cse_id),
                 "favorite_companies": favorite_companies,
                 "favorite_notes": favorite_notes,
+                "favorite_reports": favorite_reports,
             }
         else:
             context = {
