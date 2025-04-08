@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static %} 
+
+{% block title %}Reports{% endblock %}
+
+{% block extra_css %} {% endblock %}
+
+{% block header %}
+  Reports
+{% endblock %}
+
+{% block content %}    
+  <div>
+    <a href="{% url 'finreport_create' %}" class="btn btn-primary w-100 mt-3">Create new report</a>
+  </div>
+
+  {% for report in reports %}
+    <div class="card shadow-sm mt-3">
+      <div class="card-body">
+          <h5 class="card-title">
+            <a href="{% url 'finreport_detail' pk=report.id %}" class="text-decoration-none">{{ report.title }}</a>
+          </h5>
+          <p>{{ report.created|date:"Y-m-d H:i" }}</p>
+          <a href="{% url 'finreport_edit' pk=report.id %}" class="btn btn-secondary btn-sm">Edit</a>
+          <a href="{% url 'finreport_delete' pk=report.id %}" class="btn btn-danger btn-sm">Delete</a>
+      </div>
+    </div>
+
+
+  {% endfor %}
+
+
+{% endblock %}

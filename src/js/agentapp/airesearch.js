@@ -78,7 +78,7 @@ window.addEventListener("ImportCompleted", event => {
     }
 
     function showLoading(company_id) {
-        const url = `/company/${company_id}/assetaireports/`;
+        const url = `/company/${company_id}/finreports/`;
         $statusMessages.html(`
             <div>
                 <div class="spinner"></div>

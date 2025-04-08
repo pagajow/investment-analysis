@@ -1,5 +1,4 @@
 import $ from 'jquery';
-import { getApiUrl } from '../../utils'
 
 
 let fields = [];
@@ -116,9 +115,9 @@ function transformData(obj) {
 }
 
 function sendDataToServer(data) {
-    const url = `api/company/${data.company_id}/override-financial-data/`;  
+    const url = `/api/company/${data.company_id}/override-financial-data/`;  
 
-    fetch(getApiUrl(url), {
+    fetch(url, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

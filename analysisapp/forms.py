@@ -1,8 +1,11 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from .models import AssetNote, FinDataA, Company, AnalystUser, AssetFilter
+from django.urls import reverse
+from .models import FinReport, AssetNote, FinDataA, Company, AnalystUser, AssetFilter
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth.forms import PasswordChangeForm, PasswordResetForm, SetPasswordForm
+from django.utils.safestring import mark_safe
+
 
 class CompanyForm(forms.ModelForm):
     class Meta:
@@ -64,6 +67,11 @@ class CustomPasswordResetConfirmForm(SetPasswordForm):
         })
         
 class RegistrationForm(UserCreationForm):
+    accept_terms = forms.BooleanField(
+        required=True
+    )
+
+    
     class Meta:
         model = AnalystUser
         fields = ['username', 'email', 'password1', 'password2']
@@ -74,9 +82,19 @@ class RegistrationForm(UserCreationForm):
     
     def __init__(self, *args, **kwargs):
         super(RegistrationForm, self).__init__(*args, **kwargs)
-        # Dodanie klasy CSS dla pól `password1` i `password2`
+        
         self.fields['password1'].widget = forms.PasswordInput(attrs={'class': 'form-control', 'autocomplete': 'new-password'})
         self.fields['password2'].widget = forms.PasswordInput(attrs={'class': 'form-control', 'autocomplete': 'new-password'})
+        
+        self.fields['accept_terms'].widget.attrs.update({'class': 'form-check-input'})
+        terms_url = reverse('terms_of_service')
+        privacy_url = reverse('privacy_policy')
+        self.fields['accept_terms'].label = mark_safe(
+            f'I accept the <a href="{terms_url}" target="_blank">Terms of Service</a> '
+            f'and <a href="{privacy_url}" target="_blank">Privacy Policy</a>:'
+        )
+        self.fields['accept_terms'].widget = forms.CheckboxInput(attrs={'class': 'form-check-input'})
+
     
     def clean_email(self):
         email = self.cleaned_data.get('email')
@@ -118,6 +136,16 @@ class CustomPasswordChangeForm(PasswordChangeForm):
 class AssetNoteForm(forms.ModelForm):
     class Meta:
         model = AssetNote
+        fields = ['favorite', 'title', 'content', ] 
+        widgets = {
+            'title': forms.TextInput(attrs={'class': 'form-control'}),
+            'content': forms.Textarea(attrs={'class': 'form-control'}),
+            'favorite': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+        }
+
+class FinReportForm(forms.ModelForm):
+    class Meta:
+        model = FinReport
         fields = ['favorite', 'title', 'content', ] 
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control'}),

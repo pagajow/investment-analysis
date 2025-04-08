@@ -1,9 +1,14 @@
 from django.urls import path
 from . import views
 from django.contrib.auth import views as auth_views
+from django.views.generic import TemplateView
 
 urlpatterns = [
     path('', views.HomeView.as_view(), name='home'), 
+    
+    path('privacy-policy/', TemplateView.as_view(template_name='analysisapp/legal/privacy_policy.html'), name='privacy_policy'),
+    path('terms-of-service/', TemplateView.as_view(template_name='analysisapp/legal/terms_of_service.html'), name='terms_of_service'),
+    
     path('about/', views.AboutView.as_view(), name='about'), 
     path('companies/', views.CompanyListView.as_view(), name='company_list'),  
     path('login/', views.CustomLoginView.as_view(template_name='analysisapp/registration/login.html'), name='login'),
@@ -20,6 +25,11 @@ urlpatterns = [
     path('reset/done/', 
          auth_views.PasswordResetCompleteView.as_view(template_name='analysisapp/registration/password_reset_complete.html'), 
          name='password_reset_complete'),
+    path('finreports/', views.FinReportListView.as_view(), name='finreports_list'),
+    path('finreport/<int:pk>/', views.FinReportDetailView.as_view(), name='finreport_detail'),
+    path('finreport/add/', views.FinReportCreateView.as_view(), name='finreport_create'),
+    path('finreport/<int:pk>/edit/', views.FinReportUpdateView.as_view(), name='finreport_edit'),
+    path('finreport/<int:pk>/delete/', views.FinReportDeleteView.as_view(), name='finreport_delete'),
     path('filters/', views.AssetFilterListView.as_view(), name='filter_list'),
     path('filter/add/', views.AssetFilterCreateView.as_view(), name='filter_create'),
     path('filters/<int:pk>/edit/', views.AssetFilterUpdateView.as_view(), name='filter_edit'),
@@ -38,8 +48,5 @@ urlpatterns = [
     path('company/<int:company_id>/note/add/', views.AssetNoteCreateView.as_view(), name='assetnote_create'),
     path('company/<int:company_id>/note/<int:pk>/edit/', views.AssetNoteUpdateView.as_view(), name='assetnote_edit'),
     path('company/<int:company_id>/note/<int:pk>/delete/', views.AssetNoteDeleteView.as_view(), name='assetnote_delete'),
-    path('company/<int:company_id>/assetaireports/', views.AssetAIReportListView.as_view(), name='assetaireports_list'),
-    path('company/<int:company_id>/assetaireport/<int:pk>/', views.AssetAIReportDetailView.as_view(), name='assetaireport_detail'),
-    path('company/<int:company_id>/assetaireport/<int:pk>/delete/', views.AssetAIReportDeleteView.as_view(), name='assetaireport_delete'),
 ] 
 

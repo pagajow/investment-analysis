@@ -1,17 +1,17 @@
 {% extends 'base.html' %}
 {% load static %} 
 
-{% block title %}AI report{% endblock %}
+{% block title %}Report{% endblock %}
 
 {% block extra_css %} 
     <link rel="stylesheet" href="{% static 'analysisapp/css/markdown.css' %}">
 {% endblock %}
 
-{% block header %}AI report{% endblock %}
+{% block header %}Report{% endblock %}
 
 {% block content %}    
-    <a href="{% url 'assetaireports_list' aireport.company.id %}" class="btn me-2">
-        <i class="fa-solid fa-reply"></i> AI reports
+    <a href="{% url 'finreports_list' %}" class="btn me-2">
+        <i class="fa-solid fa-reply"></i> Reports
     </a>
     <article class="markdown-body m-3">{{ rendered_markdown | safe }}</article>
     <p class="mt-4 text-end">Created on: {{ aireport.created }}</p>

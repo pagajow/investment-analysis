@@ -1,6 +1,6 @@
 # Register your models here.
 from django.contrib import admin
-from .models import Company, FinDataA, AnalystUser, AssetNote, AssetAIReport, AssetFilter
+from .models import Company, FinDataA, AnalystUser, AssetNote, FinReport, AssetFilter
  
 
 @admin.register(AnalystUser)
@@ -47,14 +47,14 @@ class AssetNoteAdmin(admin.ModelAdmin):
     )
     search_fields = ('company__name', 'title', 'created','favorite')  
 
-@admin.register(AssetAIReport)
-class AssetAIReportAdmin(admin.ModelAdmin):
+@admin.register(FinReport)
+class FinReportAdmin(admin.ModelAdmin):
     list_display = (
-        'company', 
+        'title', 
         'content', 
         'created', 
     )
-    search_fields = ('company__name', 'created')  
+    search_fields = ('title', 'created')  
 
 @admin.register(AssetFilter)
 class AssetFilterAdmin(admin.ModelAdmin):

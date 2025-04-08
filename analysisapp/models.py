@@ -133,21 +133,28 @@ class AssetNote(models.Model):
     favorite = models.BooleanField(default=False)
     
     def __str__(self):
-        return f"{self.title} [{self.company.name}]"
+        return f"{self.title}"
 
     @staticmethod
     def getNotes(company_id) -> list:
         notes = AssetNote.objects.filter(company_id=company_id).order_by('created').values('title', 'content', 'created')
         return [dict(note) for note in notes]
 
-class AssetAIReport(models.Model):
-    company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='reports', blank=False)
+class FinReport(models.Model):
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,  
+        on_delete=models.CASCADE, 
+        related_name='reports',
+        blank=False
+    )
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+    title = models.CharField(max_length=255, blank=False)
     content = models.TextField()
+    favorite = models.BooleanField(default=False)
     
-def __str__(self):
-    return f"{self.company.name}/{self.created}"
+    def __str__(self):
+        return f"{self.title}"
 
 
 class AssetFilter(models.Model):

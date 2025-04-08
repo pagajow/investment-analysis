@@ -17,10 +17,14 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path, include
+from django.views.generic import RedirectView
+from django.conf import settings
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path('favicon.ico', RedirectView.as_view(url=settings.STATIC_URL + 'favicon.ico')),
     path("", include('analysisapp.urls')),
     path("ai/", include('agentapp.urls')),
     path("api/", include('api.urls')),
+    path("cookie/", include('cookieapp.urls')),
 ]

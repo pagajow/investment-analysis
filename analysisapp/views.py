@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.template import RequestContext
 from django.views.generic import ListView, View,  CreateView, UpdateView, DetailView, DeleteView
 
-from .models import AnalystUser, AssetNote, Company, FinDataA, VerificationToken, AssetAIReport, AssetFilter
+from .models import AnalystUser, AssetNote, Company, FinDataA, VerificationToken, FinReport, AssetFilter
 from django.urls import reverse_lazy
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
@@ -17,7 +17,7 @@ import bleach
 import html
 
 import pandas as pd
-from .forms import (CompanyForm, CustomPasswordResetConfirmForm, CustomPasswordResetForm, RegistrationForm, 
+from .forms import (CompanyForm, CustomPasswordResetConfirmForm, CustomPasswordResetForm, FinReportForm, RegistrationForm, 
 ProfileForm, CustomLoginForm, AssetNoteForm, AssetFilterForm, CustomPasswordChangeForm)
 from .financial_checks import CHECKS_CONFIG
 
@@ -103,8 +103,11 @@ class SendVerificationTokenView(View):
         user = request.user
         if user.is_authenticated and not user.is_verified:
             token, created = VerificationToken.objects.get_or_create(user=user)
-            send_verification_email(self.get_base_url(
-                request), user, token.token)  # Wyślij email z tokenem
+            send_verification_email(
+                base_url=self.get_base_url(request),
+                user=user,
+                token=token.token
+            )  # Send email with the token
             messages.success(
                 request, "Verification link has been sent to your email address.")
         else:
@@ -119,7 +122,7 @@ class VerifyTokenView(View):
             user = verification_token.user
             user.is_verified = True
             user.save()
-            verification_token.delete()  # Usuń token po potwierdzeniu
+            verification_token.delete()  # Delete the token after confirmation
             messages.success(
                 request, "Your email address has been verified. You can now log in.")
         except VerificationToken.DoesNotExist:
@@ -136,17 +139,13 @@ class AnalystUserProfileView(LoginRequiredMixin, UpdateView):
         return self.request.user
 
     def form_valid(self, form):
-        # Debugowanie danych z formularza
-        print("Dane przesłane do formularza (form.data):", form.data)
-        print("Dane po walidacji (form.cleaned_data):", form.cleaned_data)
-
         return super().form_valid(form)
 
 
 class CustomPasswordChangeView(LoginRequiredMixin, PasswordChangeView):
     form_class = CustomPasswordChangeForm
     template_name = 'analysisapp/registration/change_password.html'
-    success_url = reverse_lazy('profile')  # Po zmianie hasła przekieruje do profilu
+    success_url = reverse_lazy('profile')  
 
 
 class AnalystUserDeleteView(LoginRequiredMixin, DeleteView):
@@ -167,7 +166,7 @@ class AnalystUserDeleteView(LoginRequiredMixin, DeleteView):
 
 class CompanyListView(LoginRequiredMixin, ListView):
     model = Company
-    template_name = 'analysisapp/companies/company_list.html'  # Nazwa szablonu
+    template_name = 'analysisapp/companies/company_list.html'  
     context_object_name = 'companies'
 
     def get_queryset(self):
@@ -183,7 +182,7 @@ class NewCompanyView(LoginRequiredMixin, CreateView):
     success_url = reverse_lazy('company_list')
 
     def form_valid(self, form):
-        form.instance.user = self.request.user  # Przypisanie użytkownika
+        form.instance.user = self.request.user  
         return super().form_valid(form)
 
 
@@ -200,7 +199,7 @@ class EditCompanyView(LoginRequiredMixin, UpdateView):
 
 class DeleteCompanyView(LoginRequiredMixin, DeleteView):
     model = Company
-    template_name = 'analysisapp/companies/company_confirm_delete.html'  # Ścieżka do szablonu
+    template_name = 'analysisapp/companies/company_confirm_delete.html'  
     context_object_name = 'company'
 
     def get_object(self, queryset=None):
@@ -312,7 +311,7 @@ class AssetNoteListView(LoginRequiredMixin, ListView):
         company_id = self.kwargs['company_id']
         company = get_object_or_404(
             Company, id=company_id, user=self.request.user)
-        context['company'] = company  # Przekazanie firmy do kontekstu
+        context['company'] = company  
         return context
 
 
@@ -323,10 +322,7 @@ class AssetNoteDetailView(LoginRequiredMixin, DetailView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        
-        # Przetwarzanie Markdown na HTML przed wysłaniem do szablonu
         context["rendered_markdown"] = safe_markdown(self.object.content)
-        
         return context
 
 
@@ -336,13 +332,11 @@ class AssetNoteCreateView(LoginRequiredMixin, CreateView):
     template_name = 'analysisapp/notes/assetnote_form.html'
 
     def form_valid(self, form):
-        # Ustawienie firmy, do której przypisana jest notatka
         company = get_object_or_404(Company, pk=self.kwargs['company_id'])
         form.instance.company = company
         return super().form_valid(form)
 
     def get_success_url(self):
-        # Po zapisaniu przekierowanie na listę notatek
         return reverse_lazy('assetnote_list', kwargs={'company_id': self.kwargs['company_id']})
 
 
@@ -366,46 +360,56 @@ class AssetNoteDeleteView(LoginRequiredMixin, DeleteView):
     
     
 
-class AssetAIReportListView(LoginRequiredMixin, ListView):
-    model = AssetAIReport
-    template_name = 'analysisapp/aireports/assetaireport_list.html'
-    context_object_name = 'aireports'
+class FinReportListView(LoginRequiredMixin, ListView):
+    model = FinReport
+    template_name = 'analysisapp/reports/finreport_list.html'
+    context_object_name = 'reports'
 
     def get_queryset(self):
-        company_id = self.kwargs['company_id']
-        return AssetAIReport.objects.filter(company_id=company_id).order_by('-created')
+        user = self.request.user
+        return FinReport.objects.filter(user=user).order_by('-created')
+    
+class FinReportCreateView(LoginRequiredMixin, CreateView):
+    model = FinReport
+    form_class = FinReportForm
+    template_name = 'analysisapp/reports/finreport_form.html'
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        company_id = self.kwargs['company_id']
-        company = get_object_or_404(
-            Company, id=company_id, user=self.request.user)
-        context['company'] = company  # Przekazanie firmy do kontekstu
-        return context
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy('finreports_list', kwargs={})
 
 
-class AssetAIReportDetailView(LoginRequiredMixin, DetailView):
-    model = AssetAIReport
-    template_name = 'analysisapp/aireports/assetaireport_detail.html'
-    context_object_name = 'aireport'
+class FinReportUpdateView(LoginRequiredMixin, UpdateView):
+    model = FinReport
+    form_class = FinReportForm
+    template_name = 'analysisapp/reports/finreport_form.html'
+
+    def get_success_url(self):
+        return reverse_lazy('finreports_list', kwargs={})
+
+
+class FinReportDetailView(LoginRequiredMixin, DetailView):
+    model = FinReport
+    template_name = 'analysisapp/reports/finreport_detail.html'
+    context_object_name = 'report'
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        
-        # Przetwarzanie Markdown na HTML przed wysłaniem do szablonu
         context["rendered_markdown"] = safe_markdown(self.object.content)
         
         return context
 
 
-class AssetAIReportDeleteView(LoginRequiredMixin, DeleteView):
-    model = AssetAIReport
-    template_name = 'analysisapp/aireports/assetaireport_confirm_delete.html'
-    context_object_name = 'aireport'
+class FinReportDeleteView(LoginRequiredMixin, DeleteView):
+    model = FinReport
+    template_name = 'analysisapp/reports/finreport_confirm_delete.html'
+    context_object_name = 'report'
     
     def get_success_url(self):
-        company_id = self.kwargs['company_id']
-        return reverse_lazy('assetaireports_list', kwargs={'company_id': company_id})
+        return reverse_lazy('finreports_list', kwargs={})
     
 class AssetFilterListView(LoginRequiredMixin, ListView):
     model = AssetFilter

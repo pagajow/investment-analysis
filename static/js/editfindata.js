@@ -1,9 +1,3 @@
-function getApiUrl(endpoint) {
-    const baseUrl = window.serverBaseUrl || "http://localhost:8000";
-    const url = `${baseUrl}/${endpoint}`;
-    return url;
-}
-
 function addRow(event, begin=true){
     const noDataTag = document.querySelector('#financial-data-table tbody tr td#no_financial_data');
     if (noDataTag !== null) {
@@ -104,9 +98,9 @@ function validateData(year, years) {
 }
 
 function sendDataToServer(data) {
-    const url = `api/company/${data.company_id}/override-financial-data/`;  
+    const url = `/api/company/${data.company_id}/override-financial-data/`;  
 
-    fetch(getApiUrl(url), {
+    fetch(url, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

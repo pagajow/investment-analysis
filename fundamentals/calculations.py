@@ -130,17 +130,17 @@ def addCashRatio(df: pd.DataFrame):
     return s
 
 def addPEGEarningsRatio(df: pd.DataFrame):
-    s = df[PE] / (df[NET_INCOME].pct_change() * 100)
+    s = df[PE] / (df[NET_INCOME].pct_change(fill_method=None) * 100)
     s.name = PEG_EARNINGS_RATIO
     df[PEG_EARNINGS_RATIO] = s
     return s
 def addPEGRevenueRatio(df: pd.DataFrame):
-    s = df[PE] /  (df[REVENUE].pct_change() * 100)
+    s = df[PE] /  (df[REVENUE].pct_change(fill_method=None) * 100)
     s.name = PEG_REVENUE_RATIO
     df[PEG_REVENUE_RATIO] = s
     return s
 def addPEGEquityRatio(df: pd.DataFrame):
-    s = df[PE] /  (df[EQUITY].pct_change() * 100)
+    s = df[PE] /  (df[EQUITY].pct_change(fill_method=None) * 100)
     s.name = PEG_EQUITY_RATIO
     df[PEG_EQUITY_RATIO] = s
     return s

@@ -1,0 +1,38 @@
+#cookie-banner {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #f8f9fa;
+    border-top: 1px solid #dee2e6;
+    z-index: 1050;
+    max-width: 100%;
+    box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.1);
+}
+
+#cookie-banner h5 {
+    color: #212529;
+}
+
+#cookie-banner p {
+    margin-bottom: 0.75rem;
+}
+
+/* Dla osadzonego trybu na stronie */
+.cookie-section {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    padding: 2rem;
+    border-radius: 0.5rem;
+    max-width: 700px;
+    margin: 2rem auto;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.cookie-section h5 {
+    color: #212529;
+}
+
+.cookie-section p {
+    margin-bottom: 0.75rem;
+}

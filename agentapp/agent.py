@@ -121,7 +121,7 @@ class CompanyResearchAgent():
         # ai
         self.embeddings = OpenAIEmbeddings(openai_api_key=self.user.openai_api_key)
         self.vector_store = None
-        self.llm = ChatOpenAI(model=model)
+        self.llm = ChatOpenAI(model=model, openai_api_key=self.user.openai_api_key)
         
         # init
         self.analystQuestionGraph = None

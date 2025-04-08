@@ -4,16 +4,6 @@ import * as bootstrap from 'bootstrap';
 
 
 
-export function getApiUrl(endpoint) {
-    const baseUrl = window.serverBaseUrl || "http://localhost:8000";
-    const url = `${baseUrl}/${endpoint}`;
-    return url;
-}
-
-export function getCSRFToken() {
-    return window.csrfToken;
-}
-
 export async function getData(url) {
     try {
         const response = await fetch(url);

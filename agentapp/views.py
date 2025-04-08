@@ -5,7 +5,7 @@ from django.template import RequestContext
 from django.views.generic import ListView, View,  CreateView, UpdateView
 
 from agentapp.agent import CompanyResearchAgent
-from analysisapp.models import Company, FinDataA, VerificationToken, AssetAIReport
+from analysisapp.models import Company, FinDataA, VerificationToken, FinReport
 from django.urls import reverse, reverse_lazy
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
@@ -49,17 +49,18 @@ class AIResearchView(LoginRequiredMixin, View):
         results = agent.generateReport()
         report_content = results.get("report")
         errors = results.get("errors", [])
+        error = "\n\n".join(errors)
 
         if results.get("success", False):
-            report = AssetAIReport.objects.create(
-                company_id=company_id,
+            report = FinReport.objects.create(
+                title=f"AI Report ({company_id})",
                 content=report_content,
             )
-            report_url = reverse("assetaireport_detail", kwargs={"company_id": company_id, "pk": report.pk})
+            report_url = reverse("finreport_detail", kwargs={"company_id": company_id, "pk": report.pk})
             
             return JsonResponse({"redirect": report_url, "results": results})
         else:
-            return JsonResponse({"error": results.get("\n\n".join(errors), "Processing failed"), "status": "failed", "results": results})
+            return JsonResponse({"error": error if error else "Processing failed", "status": "failed", "results": results})
 
 
         
