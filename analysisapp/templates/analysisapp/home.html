@@ -1,8 +1,6 @@
 {% extends 'base.html' %}
 {% load static %} 
 
-{% block title %}Home{% endblock %}
-
 {% block extra_css %}
     <link rel="stylesheet" href="{% static 'analysisapp/css/home.css' %}">  
 {% endblock %}
@@ -13,75 +11,95 @@
     <div class="home-container">
 
         {% if user.is_authenticated %}
-            <div class="mt-4">
-                <div class="card-body">
-                    <h4 class="card-title text-start">Favorite assets</h4>
-                    <ul class="list-group text-start">
-                        {% for company in favorite_companies %}
-                            <li class="list-group-item">
-                                <a href="{% url 'financial_data' company.id %}" class="text-decoration-none">
-                                    {{ company.name }} ({{ company.ticker }})
-                                </a>
-                                <p class="mb-0 text-muted">
-                                    {{ company.description|slice:":200" }}{% if company.description|length > 200 %}...{% endif %}
-                                </p>
-                            </li>
-                        {% endfor %}
-                    </ul>
+
+            <!-- Favorite Assets -->
+            <div class="mt-5">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-light">
+                        <h5 class="mb-0">Favorite assets</h5>
+                    </div>
+                    <div class="card-body p-3">
+                        {% if favorite_companies %}
+                            <ul class="list-group list-group-flush">
+                                {% for company in favorite_companies %}
+                                    <li class="list-group-item text-start">
+                                        <a href="{% url 'financial_data' company.id %}" class="fw-bold text-decoration-none">
+                                            {{ company.name }} ({{ company.ticker }})
+                                        </a>
+                                        <p class="mb-0 small text-muted">
+                                            {{ company.description|slice:":200" }}{% if company.description|length > 200 %}...{% endif %}
+                                        </p>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <div class="alert alert-warning small mb-0">
+                                You don't have any favorite companies yet.
+                            </div>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
 
+            <!-- Favorite Notes -->
             <div class="mt-4">
-                <div class="card-body">
-                    <h4 class="card-title text-start">Favorite notes</h4>
-                    <ul class="list-group text-start">
-                        {% for note in favorite_notes %}
-                            <li class="list-group-item">
-                                <a href="{% url 'assetnote_detail' note.company.id note.id %}" class="text-decoration-none">
-                                    {{ note.title }}
-                                </a>
-                                <p class="mb-0 text-muted">
-                                    {{ note.content|slice:":200" }}{% if note.content|length > 200 %}...{% endif %}
-                                </p>
-                            </li>
-                        {% endfor %}
-                    <ul>
+                <div class="card shadow-sm">
+                    <div class="card-header bg-light">
+                        <h5 class="mb-0">Favorite notes</h5>
+                    </div>
+                    <div class="card-body p-3">
+                        {% if favorite_notes %}
+                            <ul class="list-group list-group-flush">
+                                {% for note in favorite_notes %}
+                                    <li class="list-group-item text-start">
+                                        <a href="{% url 'assetnote_detail' note.company.id note.id %}" class="fw-bold text-decoration-none">
+                                            {{ note.title }}
+                                        </a>
+                                        <p class="mb-0 small text-muted">
+                                            {{ note.content|slice:":200" }}{% if note.content|length > 200 %}...{% endif %}
+                                        </p>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <div class="alert alert-warning small mb-0">
+                                You don't have any favorite notes yet.
+                            </div>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
 
+            <!-- Favorite Reports -->
             <div class="mt-4">
-                <div class="card-body">
-                    <h4 class="card-title text-start">Favorite reports</h4>
-                    <ul class="list-group text-start">
-                        {% for report in favorite_reports %}
-                            <li class="list-group-item">
-                                <a href="{% url 'finreport_detail' report.id %}" class="text-decoration-none">
-                                    {{ report.title }}
-                                </a>
-                                <p class="mb-0 text-muted">
-                                    {{ report.content|slice:":200" }}{% if report.content|length > 200 %}...{% endif %}
-                                </p>
-                            </li>
-                        {% endfor %}
-                    <ul>
+                <div class="card shadow-sm">
+                    <div class="card-header bg-light">
+                        <h5 class="mb-0">Favorite reports</h5>
+                    </div>
+                    <div class="card-body p-3">
+                        {% if favorite_reports %}
+                            <ul class="list-group list-group-flush">
+                                {% for report in favorite_reports %}
+                                    <li class="list-group-item text-start">
+                                        <a href="{% url 'finreport_detail' report.id %}" class="fw-bold text-decoration-none">
+                                            {{ report.title }}
+                                        </a>
+                                        <p class="mb-0 small text-muted">
+                                            {{ report.content|slice:":200" }}{% if report.content|length > 200 %}...{% endif %}
+                                        </p>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <div class="alert alert-warning small mb-0">
+                                You don't have any favorite reports yet.
+                            </div>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
-
-
-            <!-- 🔹 Ostrzeżenia o kluczach API -->
-            {% if not is_openai_api_key %}
-                <div class="alert alert-warning" role="alert">
-                    <strong>AI Features Unavailable:</strong> To use AI-based reports and predictions, you need an OpenAI API key. Save it in your <a href="{% url 'profile' %}" class="alert-link">profile settings</a>.
-                </div>
-            {% endif %}
-            {% if not is_google_api_key or not is_google_cse_id %}
-                <div class="alert alert-warning" role="alert">
-                    <strong>Internet Search Disabled:</strong> To enable AI-powered web searches, you need to provide a Google Custom Search API key and a Search Engine ID (CSE ID). Save them in your <a href="{% url 'profile' %}" class="alert-link">profile settings</a>.
-                </div>
-            {% endif %}
    
         {% else %}
-            <!-- 🔹 Informacje dla niezalogowanych użytkowników -->
             <div class="card shadow-sm mt-4">
                 <div class="card-body">
                     <h2 class="card-title text-center">Investment Analysis Platform</h2>
@@ -89,7 +107,7 @@
 
                     <div class="row mt-4">
                         <div class="col-md-6">
-                            <h5>Company Tracking</h5>
+                            <h5>Asset Tracking</h5>
                             <p>Add companies and track their financial reports over time, ensuring you have up-to-date data for decision-making.</p>
                         </div>
                         <div class="col-md-6">
@@ -113,7 +131,6 @@
                 </div>
             </div>
 
-            <!-- 🔹 Formularz logowania/rejestracji -->
             <div class="text-center mt-4">
                 <h3>Get Started</h3>
                 <div class="d-flex justify-content-center mt-3">

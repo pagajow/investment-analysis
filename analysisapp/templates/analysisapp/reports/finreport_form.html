@@ -1,10 +1,6 @@
 {% extends 'base.html' %}
 {% load static %} 
 
-{% block title %}
-    {% if object %}Edit{% else %}Create{% endif %} report
-{% endblock %}
-
 {% block extra_css %} {% endblock %}
 
 {% block header %}{% if object %}Edit{% else %}Create{% endif %} reports{% endblock %}

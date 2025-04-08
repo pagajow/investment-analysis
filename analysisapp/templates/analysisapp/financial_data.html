@@ -2,11 +2,10 @@
 {% load static %} 
 {% load custom_filters %}
 
-{% block title %}Financial Data{% endblock %}
 
 {% block header %}
     <a href="{% url 'company_list' %}" class="btn">
-        <i class="fa-solid fa-reply"></i> Companies
+        <i class="fa-solid fa-reply"></i> Assets
     </a>
     Financial Data: {{ company.name }} ({{ company.ticker }}) / {{ company.currency }}
 {% endblock %}
@@ -15,6 +14,10 @@
     <Import data-modules="findashboard"></Import>    
     
     <div class="d-flex flex-wrap align-items-center mt-3">
+        <a href="{% url 'company_edit' company.id %}" class="btn me-2">
+            <i class="fa-solid fa-pen-to-square"></i> Asset
+        </a>
+
         <a href="{% url 'assetnote_list' company.id %}" class="btn me-2">
             <i class="fa-solid fa-comment-dots"></i> Notes
         </a>

@@ -2,7 +2,6 @@
 {% load static %} 
 {% load custom_filters %}
 
-{% block title %}Edit financial data: {{ financial_data.0.company.name }} ({{ financial_data.0.company.ticker }}) / {{ financial_data.0.company.currency }}{% endblock %}
 {% block header %}
     <a href="{% url 'financial_data' company.id %}" class="btn">
         <i class="fa-solid fa-reply"></i> Finantial data

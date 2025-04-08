@@ -26,8 +26,8 @@
                         
                         <li><a href="{% url 'home' %}">Home</a></li>
                         {% if user.is_authenticated and user.is_verified%}
-                            <li><a href="{% url 'company_list' %}">Companies</a></li>
-                            <li><a href="{% url 'company_create' %}">New Company</a></li>
+                            <li><a href="{% url 'company_list' %}">Assets</a></li>
+                            <li><a href="{% url 'company_create' %}">New Asset</a></li>
                             <li><a href="{% url 'filter_list' %}">Filters</a></li>
                             <li><a href="{% url 'finreports_list' %}">Reports</a></li>
                             <li><a href="{% url 'agentapp:ai_research' %}">AI Research</a></li>
