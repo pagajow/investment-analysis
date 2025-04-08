@@ -27,35 +27,14 @@ function manageSidebar() {
     const $toggleButton = $('#toggle-sidebar'); 
     const $icon = $toggleButton.find('i'); 
 
-    const isSidebarHidden = localStorage.getItem('sidebar-hidden') === 'true';
-    if (isSidebarHidden) {
-        $sidebar.addClass('sidebar-hidden');
-        $icon.removeClass('fa-arrow-left').addClass('fa-arrow-right');
-    }
-
     $toggleButton.on('click', () => {
         $sidebar.toggleClass('sidebar-hidden'); 
         const isHidden = $sidebar.hasClass('sidebar-hidden');
         if (isHidden) {
-           showSidebar();
+            $icon.removeClass('fa-bars').addClass('fa-bars');
         } else {
-            hideSidebar();
+            $icon.removeClass('fa-bars').addClass('fa-bars');
         }
-        localStorage.setItem('sidebar-hidden', isHidden);
+        document.cookie = `menu_fold=${isHidden ? 1 : 0}; path=/; max-age=31536000; SameSite=Lax; Secure;`;
     });
-}
-
-function hideSidebar(){
-    const $sidebar = $('.sidebar-wrapper'); 
-    const $toggleButton = $('#toggle-sidebar'); 
-    const $icon = $toggleButton.find('i'); 
-
-    $icon.removeClass('fa-bars').addClass('fa-bars');
-}
-function showSidebar(){
-    const $sidebar = $('.sidebar-wrapper'); 
-    const $toggleButton = $('#toggle-sidebar'); 
-    const $icon = $toggleButton.find('i'); 
-    
-    $icon.removeClass('fa-bars').addClass('fa-bars');
 }
